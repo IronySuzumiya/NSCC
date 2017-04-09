@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("NSCC")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Nadeko's Simple C Compiler implemented by C#")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NSCC")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCompany("CUG NXP Smart Car Lab")]
+[assembly: AssemblyProduct("Nadeko's Simple C Compiler")]
+[assembly: AssemblyCopyright("Copyright © Sangoku Nadeko 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
