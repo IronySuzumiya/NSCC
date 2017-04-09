@@ -11,62 +11,8 @@ namespace NSCC.Compiler
         public LexParsingException(string message) : base(message) { }
     }
 
-    abstract class AST
-    {
-
-    }
-
-    class BinaryNode : AST
-    {
-        private AST lhs;
-        private string op;
-        private AST rhs;
-        
-        public BinaryNode(AST lhs, string op, AST rhs)
-        {
-            this.lhs = lhs;
-            this.op = op;
-            this.rhs = rhs;
-        }
-    }
-
-    class NumberNode : AST
-    {
-        private double val;
-
-        public NumberNode(double val)
-        {
-            this.val = val;
-        }
-    }
-
-    class IdentifierNode : AST
-    {
-        private string id;
-
-        public IdentifierNode(string id)
-        {
-            this.id = id;
-        }
-    }
-
-    class StringNode : AST
-    {
-        private string val;
-        
-        public StringNode(string val)
-        {
-            this.val = val;
-        }
-    }
-
     unsafe static class LexicalAnalyzer
     {
-        public static readonly char[] OPERATOR_CHAR = { '+', '-', '*', '/', '%', '=', '<', '>', '&', '|', '~', '^', '!' };
-
-        public static readonly string[] OPERATOR = { "+", "-", "*", "/", "%", "=", "<", ">", "&", "|", "~", "^", "!", "<="
-            , ">=", "==", "<>", "&&", "||", "<<", ">>" };
-        
         public static bool IsMemberOf(this char c, char[] group)
         {
             foreach(var i in group)
@@ -91,28 +37,20 @@ namespace NSCC.Compiler
             return false;
         }
 
-        /*
-         * The Parsing Model
-         * 
-         *      NUMBER = "-?[0-9]*(.[0-9]*)?"
-         *      CHAR = "\w*"                      // not implement escape string yet
-         *      STRING = "\"" CHAR* "\""
-         *      IDENTIFIER = "[a-zA-Z_][a-zA-Z_0-9]*"
-         *      OPERATOR = "[+-*]" | "[/%=<>&|~^!]" | "<=" | ">=" | "==" | "<>" | "&&" | "||" | "<<" | ">>"
-         *      primary = "(" expr ")" | NUMBER | STRING | IDENTIFIER
-         *      ...
-         *      expr = primary ( OPERATOR primary )*
-         *      
-         */
-        public static AST Parse(string input)
+        public static CodeFile Tokenize(string source)
         {
-            fixed(char* reader = input)
+            var lines = source.Split('\n');
+            CodeFile codeFile;
+            foreach (var line in lines)
             {
-                return UnsafeParse(reader);
+                fixed (char* reader = line)
+                {
+                    codeFile
+                }
             }
         }
 
-        private static AST UnsafeParse(char* input)
+        private static AST UnsafeTokenize(char* input)
         {
             var reader = &input;
 

@@ -1,0 +1,157 @@
+﻿
+      -- The Lexical Parsing Model of The NSCC --
+ 
+ <Code Line> =>
+      \\ Global \\
+          <Variable Declaration>
+          <Function Declaration>
+          <Function Implementation>
+      \\ Local \\
+          <Block>
+      \\ Anywhere \\
+          <Preprocession Command> // One Line
+          
+ <Variable Declaration> =>
+      <Modifier>* <Type> <Identifier> [ = <Expression> ] ;
+      
+ <Modifier> =>
+      static extern const ...
+      
+ <Type> =>
+      void int float double char void* int** long[4] ... // Actually a C-like Language Compiler
+      
+ <Identifier> =>
+      [a-zA-Z_][a-zA-Z_0-9]*
+      
+ <Expression> =>
+      <Expression 14>
+      
+ <Expression 14> =>
+      <Expression 13> [ <Binary Operator 14> <Expression 13> ]*
+      
+ <Expression 13> =>
+      <Expression 12> [ <Binary Operator 13> <Expression 12> ]*
+      
+ ...
+ 
+ <Expression .> =>
+      <Expression .-1> [ <Binary Operator .-1> <Expression .-1> ]* // . >= 3
+      
+ <Expression 2> =>
+      [ <Unary Operator 2> ] <Expression 1>
+      
+ <Expression 1> =>
+      [ <Unary Operator 1> ] <Primary>
+      
+ <Primary> =>
+      <Function Invokation>
+      ( <Expression> )
+      <Number>
+      <Char>
+      <String>
+      <Identifier>
+      
+ <Function Invokation> =>
+      <Identifier> ( <Expression> [ , <Expression> ]* )
+      
+ <Number> =>
+      -?[0-9]*(\.[0-9]*)?
+      
+ <Char> =>
+      <char>
+      
+ <String> =>
+      <string>
+      
+ <Unary Operator 1> =>
+      . -> []
+      
+ <Unary Operator 2> =>
+      ! + - ~ ++ -- * &
+      
+ <Binary Operator 3> =>
+      * / %
+      
+ <Binary Operator 4> =>
+      + -
+      
+ <Binary Operator 5> =>
+      << >>
+      
+ <Binary Operator 6> =>
+      < > <= >=
+      
+ <Binary Operator 7> =>
+      == !=
+      
+ <Binary Operator 8> =>
+      &
+      
+ <Binary Operator 9> =>
+      ^
+      
+ <Binary Operator 10> =>
+      |
+      
+ <Binary Operator 11> =>
+      &&
+      
+ <Binary Operator 12> =>
+      ||
+      
+ <Binary Operator 13> =>
+      = += -= *= /= %= &= |= ^= ~= <<= >>=
+      
+ <Binary Operator 14> =>
+      ,
+      
+ <Function Declaration> =>
+      <Modifier>* <Type> <Identifier> ( <Type> [ <Identifier> ] [ , <Type> [ <Identifier> ] ]* ) ;
+      
+ <Function Implementation> =>
+      <Modifier>* <Type> <Identifier> ( <Type> [ <Identifier> ] [ , <Type> [ <Identifier> ] ]* ) { <Block>* }
+      
+ <Block> =>
+      <Branch Block>
+      <Loop Block>
+      <Sentence>
+      
+ <Branch Block> =>
+      <If BLock>
+      <Switch Block>
+      
+ <If Block> =>
+      if ( <Expression> ) { <Block>* } [ else if ( <Expression> ) { <Block>* } ]* [ else { <Block>* } ]
+      
+ <Switch Block> =>
+      switch ( <Expression> ) { [ case <Expression> : <Block>* ]* [ default: <Block>* ] }
+      
+ <Loop Block> =>
+      <While Block>
+      <For Block>
+      <Do While Block>
+      
+ <While Block> =>
+      while ( <Expression> ) { <Block>* }
+      
+ <For Block> =>
+      for( <Expression> ; <Expression> ; <Expression> ) { <Block>* }
+      
+ <Do While Block> =>
+      do { <Block>* } while ( <Expression> ) ;
+      
+ <Sentence> =>
+      <Expression> ;
+      break ;
+      continue ;
+      return <Expression> ;
+      
+ <Preprocession Command>
+      # include " <Path> "
+      # define <Identifier> [ <Expression> ]
+      # if <Expression>
+      # elif <Expression>
+      # else
+      # ifdef <Identifier>
+      # ifndef <Identifier>
+      # endif
