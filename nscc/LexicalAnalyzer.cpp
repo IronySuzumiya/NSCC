@@ -1,13 +1,11 @@
 #include "LexicalAnalyzer.h"
 #include "Utility.h"
 
-using std::make_shared;
-
 namespace nscc
 {
 	CodeFile::Ptr LexicalAnalyzer::Tokenize(istream_t & iss)
 	{
-		std::vector<string_t> lines;
+		vector<string_t> lines;
 		string_t line;
 		while (std::getline(iss, line))
 		{
@@ -18,7 +16,7 @@ namespace nscc
 
 	CodeFile::Ptr LexicalAnalyzer::Tokenize(ifstream_t & ifs)
 	{
-		std::vector<string_t> lines;
+		vector<string_t> lines;
 		string_t line;
 		while (std::getline(ifs, line))
 		{
@@ -30,7 +28,7 @@ namespace nscc
 	CodeFile::Ptr LexicalAnalyzer::Tokenize(const string_t & input)
 	{
 		ifstream_t is(input);
-		std::vector<string_t> lines;
+		vector<string_t> lines;
 		string_t line;
 		while (std::getline(is, line))
 		{
@@ -42,7 +40,7 @@ namespace nscc
 	CodeFile::Ptr LexicalAnalyzer::Tokenize(const std::vector<string_t>& lines)
 	{
 		auto codeFile = make_shared<CodeFile>();
-		std::stack<TokenizationState> state_stack;
+		stack<TokenizationState> state_stack;
 		state_stack.push(BEGIN);
 		for (auto line : lines)
 		{
@@ -82,8 +80,6 @@ namespace nscc
 					token == T("inline") ? INLINE :
 					token == T("void") ? VOID_TYPE :
 					token == T("char") ? CHAR_TYPE :
-					token == T("unsigned") ? UNSIGNED :
-					token == T("signed") ? SIGNED :
 					token == T("int") ? INT_TYPE :
 					token == T("short") ? SHORT_TYPE :
 					token == T("long") ? LONG_TYPE :

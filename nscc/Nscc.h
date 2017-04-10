@@ -55,6 +55,11 @@ namespace nscc
 #define strtod_t strtod
 #define strtof_t strtof
 #endif
+
+	using std::shared_ptr;
+	using std::make_shared;
+	using std::vector;
+	using std::stack;
 }
 
 #endif

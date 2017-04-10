@@ -75,8 +75,6 @@ namespace nscc
 		// Types
 		VOID_TYPE,					// void
 		CHAR_TYPE,					// char
-		UNSIGNED,					// unsigned
-		SIGNED,						// signed
 		INT_TYPE,					// int
 		SHORT_TYPE,					// short
 		LONG_TYPE,					// long
@@ -118,19 +116,19 @@ namespace nscc
 
 	struct CodeLine
 	{
-		typedef std::shared_ptr<CodeLine> Ptr;
-		typedef std::vector<Ptr> List;
+		typedef shared_ptr<CodeLine> Ptr;
+		typedef vector<Ptr> List;
 
-		std::vector<CodeToken> tokens;
-		std::vector<CodeError> errors;
+		vector<CodeToken> tokens;
+		vector<CodeError> errors;
 	};
 
 	struct CodeFile
 	{
-		typedef std::shared_ptr<CodeFile> Ptr;
-		typedef std::vector<Ptr> List;
+		typedef shared_ptr<CodeFile> Ptr;
+		typedef vector<Ptr> List;
 
-		std::vector<CodeLine::Ptr> lines;
+		vector<CodeLine::Ptr> lines;
 	};
 
 	class LexicalAnalyzer
@@ -139,9 +137,9 @@ namespace nscc
 		static CodeFile::Ptr Tokenize(istream_t & iss);
 		static CodeFile::Ptr Tokenize(ifstream_t & ifs);
 		static CodeFile::Ptr Tokenize(const string_t & input);
-		static CodeFile::Ptr Tokenize(const std::vector<string_t> & lines);
+		static CodeFile::Ptr Tokenize(const vector<string_t> & lines);
 	private:
-		static CodeLine::Ptr Tokenize_Line(const string_t & line, std::stack<TokenizationState> & state_stack);
+		static CodeLine::Ptr Tokenize_Line(const string_t & line, stack<TokenizationState> & state_stack);
 	};
 }
 
