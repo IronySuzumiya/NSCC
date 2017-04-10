@@ -48,6 +48,44 @@ namespace nscc
 		END_OF_SENTENCE,			// ;
 		BLOCK_BEGIN,				// {
 		BLOCK_END,					// }
+		SIZE_OF,					// sizeof
+
+		// Reserved words
+		IF,							// if
+		ELSE,						// else
+		SWITCH,						// switch
+		CASE,						// case
+		DEFAULT,					// default
+		BREAK,						// break
+		WHILE,						// while
+		FOR,						// for
+		DO,							// do
+		CONTINUE,					// continue
+		RETURN,						// return
+		TYPEDEF,					// typedef
+
+		// Modifers
+		STATIC,						// static
+		EXTERN,						// extern
+		AUTO,						// auto
+		CONST,						// const
+		VOLATILE,					// volatile
+		INLINE,						// inline
+
+		// Types
+		VOID_TYPE,					// void
+		CHAR_TYPE,					// char
+		UNSIGNED,					// unsigned
+		SIGNED,						// signed
+		INT_TYPE,					// int
+		SHORT_TYPE,					// short
+		LONG_TYPE,					// long
+		FLOAT_TYPE,					// float
+		DOUBLE_TYPE,				// double
+		STRUCT_TYPE,				// struct
+		UNION_TYPE,					// union
+		ENUM_TYPE,					// enum
+		BOOL_TYPE,					// bool
 	};
 
 	enum TokenizationState

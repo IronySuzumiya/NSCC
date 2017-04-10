@@ -59,8 +59,44 @@ namespace nscc
 		auto token_start = reader;
 		auto add_token = [&](CodeTokenType type, string_t::size_type length)
 		{
+			auto token = string_t(token_start, length);
+			if (type == IDENTIFIER)
+			{
+				type = token == T("if") ? IF :
+					token == T("else") ? ELSE :
+					token == T("switch") ? SWITCH :
+					token == T("case") ? CASE :
+					token == T("default") ? DEFAULT :
+					token == T("break") ? BREAK :
+					token == T("while") ? WHILE :
+					token == T("for") ? FOR :
+					token == T("do") ? DO :
+					token == T("continue") ? CONTINUE :
+					token == T("return") ? RETURN :
+					token == T("typedef") ? TYPEDEF :
+					token == T("static") ? STATIC :
+					token == T("extern") ? EXTERN :
+					token == T("auto") ? AUTO :
+					token == T("const") ? CONST :
+					token == T("volatile") ? VOLATILE :
+					token == T("inline") ? INLINE :
+					token == T("void") ? VOID_TYPE :
+					token == T("char") ? CHAR_TYPE :
+					token == T("unsigned") ? UNSIGNED :
+					token == T("signed") ? SIGNED :
+					token == T("int") ? INT_TYPE :
+					token == T("short") ? SHORT_TYPE :
+					token == T("long") ? LONG_TYPE :
+					token == T("float") ? FLOAT_TYPE :
+					token == T("double") ? DOUBLE_TYPE :
+					token == T("struct") ? STRUCT_TYPE :
+					token == T("union") ? UNION_TYPE :
+					token == T("enum") ? ENUM_TYPE :
+					token == T("bool") ? BOOL_TYPE :
+					IDENTIFIER;
+			}
 			codeLine->tokens.push_back
-			(CodeToken{ type, string_t(token_start, length), token_start - line_start });
+			(CodeToken{ type, token, token_start - line_start });
 		};
 		auto add_error = [&](string_t message)
 		{
