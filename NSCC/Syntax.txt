@@ -1,5 +1,5 @@
 ﻿
-      -- The Lexical Parsing Model of The NSCC --
+      -- Old Lexical Parsing Model of The NSCC --
  
  <Code Line> =>
       \\ Global \\

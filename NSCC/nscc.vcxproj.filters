@@ -21,6 +21,9 @@
     <ClCompile Include="Utility.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LexicalAnalyzer.h">
@@ -35,6 +38,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Syntax.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="TestFile.txt">
       <Filter>资源文件</Filter>
     </Text>
   </ItemGroup>

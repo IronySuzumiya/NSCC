@@ -6,6 +6,7 @@
 #include <list>
 #include <set>
 #include <map>
+#include <stack>
 #include <memory>
 #include <string>
 #include <sstream>
@@ -17,6 +18,12 @@
 
 namespace nscc
 {
+#ifdef _DEBUG_NSCC
+#define _ASSERT_NSCC _ASSERT
+#else
+#define _ASSERT_NSCC(...)
+#endif
+
 #ifdef _UNICODE_NSCC
 	typedef wchar_t char_t;
 	typedef std::wstring string_t;
@@ -29,7 +36,7 @@ namespace nscc
 #define T(X) L ## X
 #define strtol_t wcstol
 #define strtod_t wcstod
-#define atof_t _wtof
+#define strtof_t wcstof
 #else
 	typedef char char_t;
 	typedef std::string string_t;
@@ -42,7 +49,7 @@ namespace nscc
 #define T(X) X
 #define strtol_t strtol
 #define strtod_t strtod
-#define atof_t atof
+#define strtof_t strtof
 #endif
 }
 

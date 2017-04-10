@@ -5,36 +5,6 @@
 
 namespace nscc
 {
-	struct CodeFile
-	{
-		typedef std::shared_ptr<CodeFile> Ptr;
-		typedef std::vector<Ptr> List;
-
-		std::vector<CodeLine::Ptr> lines;
-	};
-
-	struct CodeLine
-	{
-		typedef std::shared_ptr<CodeLine> Ptr;
-		typedef std::vector<Ptr> List;
-
-		std::vector<CodeToken> tokens;
-		std::vector<CodeError> errors;
-	};
-
-	struct CodeToken
-	{
-		CodeTokenType type = CodeTokenType::UNKNOWN;
-		string_t value;
-		string_t::size_type colno;
-	};
-
-	struct CodeError
-	{
-		string_t message;
-		string_t::size_type colno;
-	};
-
 	enum CodeTokenType
 	{
 		UNKNOWN,
@@ -45,7 +15,10 @@ namespace nscc
 		IDENTIFIER,
 		SEL_MEM,					// .
 		SEL_MEM_WITH_PTR,			// ->
-		INDEX,						// []
+		BRACKET_BEGIN,				// (
+		BRACKET_END,				// )
+		INDEX_BEGIN,				// [
+		INDEX_END,					// ]
 		LOGICAL_NOT,				// !
 		ADD__POSITIVE,				// +
 		SUB__NEGATIVE,				// -
@@ -70,6 +43,11 @@ namespace nscc
 		LOGICAL_OR,					// ||
 		ASSIGNMENT,					// =
 		COMMA,						// ,
+		JUDGEMENT,					// ?
+		CONDITION_SEPARATOR,		// :
+		END_OF_SENTENCE,			// ;
+		BLOCK_BEGIN,				// {
+		BLOCK_END,					// }
 	};
 
 	enum TokenizationState
@@ -78,24 +56,54 @@ namespace nscc
 		IN_INTEGER,
 		IN_FLOAT,
 		IN_CHAR,
-		IN_CHAR_ESCAPING,
 		IN_STRING,
-		IN_STRING_ESCAPING,
+		IN_IDENTIFIER,
 		IN_COMMENT,				// //
 		IN_MULTILINE_COMMENT,	// /* */
-		IN_IDENTIFIER,
 		IN_BRACKET,				// ()
 		IN_SQUARE_BRACKET,		// []
+		IN_BRACE,				// {}
 	};
 
-	static class LexicalAnalyzer
+	struct CodeToken
+	{
+		CodeTokenType type;
+		string_t value;
+		ptrdiff_t colno;
+	};
+
+	struct CodeError
+	{
+		string_t message;
+		ptrdiff_t colno;
+	};
+
+	struct CodeLine
+	{
+		typedef std::shared_ptr<CodeLine> Ptr;
+		typedef std::vector<Ptr> List;
+
+		std::vector<CodeToken> tokens;
+		std::vector<CodeError> errors;
+	};
+
+	struct CodeFile
+	{
+		typedef std::shared_ptr<CodeFile> Ptr;
+		typedef std::vector<Ptr> List;
+
+		std::vector<CodeLine::Ptr> lines;
+	};
+
+	class LexicalAnalyzer
 	{
 	public:
-		CodeFile::Ptr Tokenize(istream_t & input);
-		CodeFile::Ptr Tokenize(const string_t & input);
-		CodeFile::Ptr Tokenize(const std::vector<string_t> & input);
+		static CodeFile::Ptr Tokenize(istream_t & iss);
+		static CodeFile::Ptr Tokenize(ifstream_t & ifs);
+		static CodeFile::Ptr Tokenize(const string_t & input);
+		static CodeFile::Ptr Tokenize(const std::vector<string_t> & lines);
 	private:
-
+		static CodeLine::Ptr Tokenize_Line(const string_t & line, std::stack<TokenizationState> & state_stack);
 	};
 }
 
