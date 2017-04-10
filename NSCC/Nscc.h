@@ -29,6 +29,7 @@ namespace nscc
 #define T(X) L ## X
 #define strtol_t wcstol
 #define strtod_t wcstod
+#define atof_t _wtof
 #else
 	typedef char char_t;
 	typedef std::string string_t;
@@ -41,6 +42,7 @@ namespace nscc
 #define T(X) X
 #define strtol_t strtol
 #define strtod_t strtod
+#define atof_t atof
 #endif
 }
 

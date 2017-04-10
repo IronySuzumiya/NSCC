@@ -1,2 +1,2 @@
 # NSCC
-Nadeko's Simple C Compiler (implemented by C#)
+Nadeko's Simple C-like Language Compiler (implemented by C++)

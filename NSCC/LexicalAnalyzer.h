@@ -54,7 +54,6 @@ namespace nscc
 		DECREMENT,					// --
 		MUL__DEREFERENCE,			// *
 		AND__REFERENCE,				// &
-		MUL,						// *
 		DIV,						// /
 		MOD,						// %
 		LEFT_SHIFT,					// <<
@@ -82,20 +81,11 @@ namespace nscc
 		IN_CHAR_ESCAPING,
 		IN_STRING,
 		IN_STRING_ESCAPING,
-		IN_PRECOMMENT,			// / //
-		IN_COMMENT,
+		IN_COMMENT,				// //
 		IN_MULTILINE_COMMENT,	// /* */
 		IN_IDENTIFIER,
 		IN_BRACKET,				// ()
-		IN_POST_SUB,			// - -> --
 		IN_SQUARE_BRACKET,		// []
-		IN_POST_ADD,			// + ++
-		IN_POST_LESSTHAN,		// < <= <<
-		IN_POST_GREATERTHAN,	// > >= >>
-		IN_POST_EQUAL,			// = ==
-		IN_POST_LOGICAL_NOT,	// ! !=
-		IN_POST_AND,			// & &&
-		IN_POST_OR,				// | ||
 	};
 
 	static class LexicalAnalyzer
