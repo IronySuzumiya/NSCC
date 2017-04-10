@@ -18,6 +18,10 @@
 
 namespace nscc
 {
+#ifdef _DEBUG
+#define _DEBUG_NSCC
+#endif
+
 #ifdef _DEBUG_NSCC
 #define _ASSERT_NSCC _ASSERT
 #else
