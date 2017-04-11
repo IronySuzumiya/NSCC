@@ -103,7 +103,7 @@ namespace nscc
 
 	struct CodeToken
 	{
-		CodeTokenType type;
+		CodeTokenType type{ UNKNOWN };
 		string_t value;
 		ptrdiff_t rowno;
 		ptrdiff_t colno;
@@ -138,8 +138,8 @@ namespace nscc
 
 	bool is_modifier(CodeToken token);
 	bool is_type(CodeToken token);
-	bool is_binary_operator(CodeToken token);
-	bool is_unary_operator(CodeToken token);
+	bool is_binary_operator(CodeToken token, size_t level = 13);
+	bool is_unary_operator(CodeToken token, size_t level = 2);
 }
 
 #endif

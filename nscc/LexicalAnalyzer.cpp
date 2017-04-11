@@ -445,38 +445,43 @@ namespace nscc
 			|| token.type == BOOL_TYPE;
 	}
 
-	bool is_binary_operator(CodeToken token)
+	bool is_binary_operator(CodeToken token, size_t level = 13)
 	{
-		return token.type == ADD__POSITIVE
-			|| token.type == SUB__NEGATIVE
-			|| token.type == MUL__DEREFERENCE
-			|| token.type == AND__REFERENCE
-			|| token.type == DIV
-			|| token.type == MOD
-			|| token.type == LEFT_SHIFT
-			|| token.type == RIGHT_SHIFT
-			|| token.type == LESS_THAN
-			|| token.type == GREATER_THAN
-			|| token.type == LESS_EQUAL
-			|| token.type == GREATER_EQUAL
-			|| token.type == EQUAL_TO
-			|| token.type == NOT_EQUAL_TO
-			|| token.type == XOR
-			|| token.type == OR
-			|| token.type == LOGICAL_AND
-			|| token.type == LOGICAL_OR
-			|| token.type == ASSIGNMENT;
+		bool yes_or_not = false;
+		switch (level)
+		{
+		case 13: yes_or_not = token.type == ASSIGNMENT;
+		case 12: yes_or_not = yes_or_not || token.type == LOGICAL_OR;
+		case 11: yes_or_not = yes_or_not || token.type == LOGICAL_AND;
+		case 10: yes_or_not = yes_or_not || token.type == OR;
+		case 9:  yes_or_not = yes_or_not || token.type == XOR;
+		case 8:  yes_or_not = yes_or_not || token.type == AND__REFERENCE;
+		case 7:  yes_or_not = yes_or_not || token.type == EQUAL_TO || token.type == NOT_EQUAL_TO;
+		case 6:  yes_or_not = yes_or_not || token.type == LESS_THAN || token.type == GREATER_THAN || token.type == LESS_EQUAL || token.type == GREATER_EQUAL;
+		case 5:  yes_or_not = yes_or_not || token.type == LEFT_SHIFT || token.type == RIGHT_SHIFT;
+		case 4:  yes_or_not = yes_or_not || token.type == ADD__POSITIVE || token.type == SUB__NEGATIVE;
+		case 3:  yes_or_not = yes_or_not || token.type == MUL__DEREFERENCE || token.type == DIV || token.type == MOD;
+		}
+		return yes_or_not;
 	}
 
-	bool is_unary_operator(CodeToken token)
+	bool is_unary_operator(CodeToken token, size_t level = 2)
 	{
-		return token.type == LOGICAL_NOT
-			|| token.type == ADD__POSITIVE
-			|| token.type == SUB__NEGATIVE
-			|| token.type == NOT
-			|| token.type == INCREMENT
-			|| token.type == DECREMENT
-			|| token.type == MUL__DEREFERENCE
-			|| token.type == AND__REFERENCE;
+		bool yes_or_not = false;
+		switch (level)
+		{
+		case 2:
+			yes_or_not = token.type == SEL_MEM || token.type == SEL_MEM_WITH_PTR || token.type == INDEX_BEGIN;
+		case 1:
+			yes_or_not = yes_or_not || token.type == LOGICAL_NOT
+				|| token.type == ADD__POSITIVE
+				|| token.type == SUB__NEGATIVE
+				|| token.type == NOT
+				|| token.type == INCREMENT
+				|| token.type == DECREMENT
+				|| token.type == MUL__DEREFERENCE
+				|| token.type == AND__REFERENCE;
+		}
+		return yes_or_not;
 	}
 }

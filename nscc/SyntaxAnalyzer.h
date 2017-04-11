@@ -18,13 +18,24 @@ namespace nscc
 
 	struct BinaryExpression : virtual Expression
 	{
+		Child lhs;
 		Child rhs;
+		BinaryExpression(Child lhs, CodeToken op, Child rhs)
+		{
+			this->lhs = lhs;
+			this->op = op;
+			this->rhs = rhs;
+		}
 	};
 
 	struct UnaryExpression : virtual Expression
 	{
-		Child lhs;
 		Child rhs;
+		UnaryExpression(CodeToken op, Child rhs)
+		{
+			this->op = op;
+			this->rhs = rhs;
+		}
 	};
 	
 	struct VariableDeclaration : virtual ASTNode
