@@ -10,25 +10,10 @@ namespace nscc
 	{
 		typedef shared_ptr<ASTNode> Child;
 	};
-	
-	struct Token
-	{
-		CodeToken token;
-	};
-
-	struct Modifiers : virtual ASTNode
-	{
-		vector<Child> ids;
-	};
-
-	struct Type : virtual ASTNode
-	{
-		Child id;
-	};
 
 	struct Expression : virtual ASTNode
 	{
-		Child op;
+		CodeToken op;
 	};
 
 	struct BinaryExpression : virtual Expression
@@ -44,18 +29,25 @@ namespace nscc
 	
 	struct VariableDeclaration : virtual ASTNode
 	{
-		Child modifiers;
-		Child type;
-		Child id;
+		vector<CodeToken> modifiers;
+		CodeToken type;
+		CodeToken id;
 		Child initialized;
 	};
 
 	struct FunctionDeclaration : virtual ASTNode
 	{
-		Child modifiers;
-		Child type;
-		Child id;
+		vector<CodeToken> modifiers;
+		CodeToken type;
+		CodeToken id;
 		Child initialized;
+	};
+
+	struct ParsingError
+	{
+		string_t message;
+		ptrdiff_t rowno;
+		ptrdiff_t tokenno;
 	};
 
 	class SyntaxAnalyzer
@@ -63,7 +55,8 @@ namespace nscc
 	public:
 		ASTNode::Child Parse(CodeFile::Ptr codeFile);
 	private:
-		ASTNode::Child Eat_Declaration(CodeLine::List lines);
+		ASTNode::Child Eat_Program(vector<CodeToken>::const_iterator token, vector<CodeError> errors);
+		ASTNode::Child Eat_Declaration(vector<CodeToken>::const_iterator token, vector<CodeError> errors);
 	};
 }
 

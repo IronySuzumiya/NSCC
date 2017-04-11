@@ -42,16 +42,17 @@ namespace nscc
 		auto codeFile = make_shared<CodeFile>();
 		stack<TokenizationState> state_stack;
 		state_stack.push(BEGIN);
+		ptrdiff_t rowno = 0;
 		for (auto line : lines)
 		{
-			codeFile->lines.push_back(Tokenize_Line(line, state_stack));
+			Tokenize_Line(codeFile, line, rowno, state_stack);
+			++rowno;
 		}
 		return codeFile;
 	}
 
-	CodeLine::Ptr LexicalAnalyzer::Tokenize_Line(const string_t & line, std::stack<TokenizationState> & state_stack)
+	void LexicalAnalyzer::Tokenize_Line(CodeFile::Ptr codeFile, const string_t & line, ptrdiff_t rowno, std::stack<TokenizationState> & state_stack)
 	{
-		auto codeLine = make_shared<CodeLine>();
 		auto line_start = line.c_str();
 		auto reader = line_start;
 		auto token_start = reader;
@@ -91,13 +92,13 @@ namespace nscc
 					token == T("bool") ? BOOL_TYPE :
 					IDENTIFIER;
 			}
-			codeLine->tokens.push_back
-			(CodeToken{ type, token, token_start - line_start });
+			codeFile->tokens.push_back
+			(CodeToken{ type, token, rowno, token_start - line_start });
 		};
 		auto add_error = [&](string_t message)
 		{
-			codeLine->errors.push_back
-			(CodeError{ message, reader - line_start });
+			codeFile->errors.push_back
+			(CodeError{ message, rowno, reader - line_start });
 		};
 
 		while (true)
@@ -416,7 +417,66 @@ namespace nscc
 		auto final_state = state_stack.top();
 		_ASSERT_NSCC(final_state == BEGIN || final_state == IN_BRACKET
 			|| final_state == IN_SQUARE_BRACKET || final_state == IN_BRACE);
-		_ASSERT_NSCC(codeLine->errors.size() == 0);
-		return codeLine;
+		_ASSERT_NSCC(codeFile->errors.size() == 0);
+	}
+
+	bool is_modifier(CodeToken token)
+	{
+		return token.type == STATIC
+			|| token.type == EXTERN
+			|| token.type == AUTO
+			|| token.type == CONST
+			|| token.type == VOLATILE
+			|| token.type == INLINE;
+	}
+
+	bool is_type(CodeToken token)
+	{
+		return token.type == VOID_TYPE
+			|| token.type == CHAR_TYPE
+			|| token.type == INT_TYPE
+			|| token.type == SHORT_TYPE
+			|| token.type == LONG_TYPE
+			|| token.type == FLOAT_TYPE
+			|| token.type == DOUBLE_TYPE
+			|| token.type == STRUCT_TYPE
+			|| token.type == UNION_TYPE
+			|| token.type == ENUM_TYPE
+			|| token.type == BOOL_TYPE;
+	}
+
+	bool is_binary_operator(CodeToken token)
+	{
+		return token.type == ADD__POSITIVE
+			|| token.type == SUB__NEGATIVE
+			|| token.type == MUL__DEREFERENCE
+			|| token.type == AND__REFERENCE
+			|| token.type == DIV
+			|| token.type == MOD
+			|| token.type == LEFT_SHIFT
+			|| token.type == RIGHT_SHIFT
+			|| token.type == LESS_THAN
+			|| token.type == GREATER_THAN
+			|| token.type == LESS_EQUAL
+			|| token.type == GREATER_EQUAL
+			|| token.type == EQUAL_TO
+			|| token.type == NOT_EQUAL_TO
+			|| token.type == XOR
+			|| token.type == OR
+			|| token.type == LOGICAL_AND
+			|| token.type == LOGICAL_OR
+			|| token.type == ASSIGNMENT;
+	}
+
+	bool is_unary_operator(CodeToken token)
+	{
+		return token.type == LOGICAL_NOT
+			|| token.type == ADD__POSITIVE
+			|| token.type == SUB__NEGATIVE
+			|| token.type == NOT
+			|| token.type == INCREMENT
+			|| token.type == DECREMENT
+			|| token.type == MUL__DEREFERENCE
+			|| token.type == AND__REFERENCE;
 	}
 }

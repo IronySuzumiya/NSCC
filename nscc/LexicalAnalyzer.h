@@ -105,22 +105,15 @@ namespace nscc
 	{
 		CodeTokenType type;
 		string_t value;
+		ptrdiff_t rowno;
 		ptrdiff_t colno;
 	};
 
 	struct CodeError
 	{
 		string_t message;
+		ptrdiff_t rowno;
 		ptrdiff_t colno;
-	};
-
-	struct CodeLine
-	{
-		typedef shared_ptr<CodeLine> Ptr;
-		typedef vector<Ptr> List;
-
-		vector<CodeToken> tokens;
-		vector<CodeError> errors;
 	};
 
 	struct CodeFile
@@ -128,7 +121,8 @@ namespace nscc
 		typedef shared_ptr<CodeFile> Ptr;
 		typedef vector<Ptr> List;
 
-		vector<CodeLine::Ptr> lines;
+		vector<CodeToken> tokens;
+		vector<CodeError> errors;
 	};
 
 	class LexicalAnalyzer
@@ -139,8 +133,13 @@ namespace nscc
 		static CodeFile::Ptr Tokenize(const string_t & input);
 		static CodeFile::Ptr Tokenize(const vector<string_t> & lines);
 	private:
-		static CodeLine::Ptr Tokenize_Line(const string_t & line, stack<TokenizationState> & state_stack);
+		static void Tokenize_Line(CodeFile::Ptr codeFile, const string_t & line, ptrdiff_t rowno, stack<TokenizationState> & state_stack);
 	};
+
+	bool is_modifier(CodeToken token);
+	bool is_type(CodeToken token);
+	bool is_binary_operator(CodeToken token);
+	bool is_unary_operator(CodeToken token);
 }
 
 #endif
