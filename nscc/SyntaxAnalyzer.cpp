@@ -8,8 +8,6 @@ namespace nscc
 		auto token = codeFile->tokens.cbegin();
 		auto errors = codeFile->errors;
 
-		CodeToken variable_owner;
-
 		auto add_error = [&](string_t message = T("error"))
 		{
 			errors.push_back({ message, token->rowno, token->colno });
@@ -29,6 +27,32 @@ namespace nscc
 				add_error(error_message);
 				return CodeToken{ UNKNOWN, T(""), token->rowno, token->colno };
 			}
+		};
+
+		auto eat_statement = [&]()
+		{
+
+		};
+
+		auto eat_ifelseblock = [&]()
+		{
+
+		};
+
+		auto eat_block_body = [&]()
+		{
+			eat_token(); // {
+				switch (token->type)
+				{
+				case IF:
+				case SWITCH:
+				case WHILE:
+				case DO:
+				case FOR:
+				case BLOCK_END:
+				default:
+
+				}
 		};
 
 		auto eat_function_params_declr = [&]()
@@ -136,9 +160,17 @@ namespace nscc
 				}
 				else if (token->type == BLOCK_BEGIN)
 				{
-					// Function Implementation
+					auto result = make_shared<FunctionImplementation>();
+					result->modifiers = modifiers;
+					result->id = id;
+					result->type = type;
+					result->params = params;
+					result->body = eat_block_body();
+					return std::dynamic_pointer_cast<ASTNode, FunctionImplementation>(result);
 				}
 			}
+			add_error(T("invalid syntax"));
+			return make_shared<ASTNode>();
 		};
 
 		return ast;

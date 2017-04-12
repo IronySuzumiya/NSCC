@@ -89,6 +89,15 @@ namespace nscc
 		vector<Child> params;
 	};
 
+	struct FunctionImplementation : virtual ASTNode
+	{
+		vector<CodeToken> modifiers;
+		CodeToken type;
+		CodeToken id;
+		vector<Child> params;
+		Child body;
+	};
+
 	struct ParsingError
 	{
 		string_t message;
