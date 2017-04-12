@@ -37,6 +37,30 @@ namespace nscc
 			this->rhs = rhs;
 		}
 	};
+
+	struct VariableItem : virtual ASTNode
+	{
+		CodeToken var;
+		VariableItem(CodeToken var)
+		{
+			this->var = var;
+		}
+	};
+
+	struct ValueItem : virtual ASTNode
+	{
+		CodeToken value;
+		ValueItem(CodeToken value)
+		{
+			this->value = value;
+		}
+	};
+
+	struct FunctionCall : virtual ASTNode
+	{
+		vector<Child> params;
+		CodeToken id;
+	};
 	
 	struct VariableDeclaration : virtual ASTNode
 	{
@@ -46,12 +70,23 @@ namespace nscc
 		Child initialized;
 	};
 
+	struct FunctionParameter : virtual ASTNode
+	{
+		CodeToken type;
+		CodeToken id;
+		FunctionParameter(CodeToken id, CodeToken type)
+		{
+			this->id = id;
+			this->type = type;
+		}
+	};
+
 	struct FunctionDeclaration : virtual ASTNode
 	{
 		vector<CodeToken> modifiers;
 		CodeToken type;
 		CodeToken id;
-		Child initialized;
+		vector<Child> params;
 	};
 
 	struct ParsingError
@@ -66,8 +101,7 @@ namespace nscc
 	public:
 		ASTNode::Child Parse(CodeFile::Ptr codeFile);
 	private:
-		ASTNode::Child Eat_Program(vector<CodeToken>::const_iterator token, vector<CodeError> errors);
-		ASTNode::Child Eat_Declaration(vector<CodeToken>::const_iterator token, vector<CodeError> errors);
+		ASTNode::Child eat_expression(vector<CodeToken>::const_iterator token, vector<CodeError> & errors, size_t level = 13);
 	};
 }
 

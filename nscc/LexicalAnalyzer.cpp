@@ -484,4 +484,12 @@ namespace nscc
 		}
 		return yes_or_not;
 	}
+
+	bool is_value(CodeToken token)
+	{
+		return token.type == INTEGER
+			|| token.type == FLOAT
+			|| token.type == CHAR
+			|| token.type == STRING;
+	}
 }

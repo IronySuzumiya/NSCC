@@ -140,6 +140,7 @@ namespace nscc
 	bool is_type(CodeToken token);
 	bool is_binary_operator(CodeToken token, size_t level = 13);
 	bool is_unary_operator(CodeToken token, size_t level = 2);
+	bool is_value(CodeToken token);
 }
 
 #endif
